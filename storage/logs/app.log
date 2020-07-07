@@ -1,0 +1,6 @@
+2020/07/07 16:48:43 
+2020/07/07 16:50:55 
+2020/07/07 16:51:24 
+2020/07/07 16:51:24 
+2020/07/07 16:56:38 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594112198223341000}
+2020/07/07 16:56:38 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594112198223635000}
