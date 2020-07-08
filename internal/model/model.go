@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Blackoutta/blog-service/global"
+	"github.com/Blackoutta/blog-service/pkg/app"
 	"github.com/Blackoutta/blog-service/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -27,6 +28,11 @@ type Tag struct {
 
 func (a Tag) TableName() string {
 	return "blog_tag"
+}
+
+type TagSwagger struct {
+	List  []*Tag
+	Pager *app.Pager
 }
 
 type Article struct {

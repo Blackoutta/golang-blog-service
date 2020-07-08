@@ -31,6 +31,9 @@ func init() {
 	}
 }
 
+// @title 博客系统
+// @version 1.0
+// @description 这是我的博客项目
 func main() {
 	global.Logger.Debug("hello world!")
 	global.Logger.Info("hello world!")
