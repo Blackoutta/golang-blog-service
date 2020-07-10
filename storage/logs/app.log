@@ -40,3 +40,31 @@
 2020/07/08 21:46:01 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594215961242155000}
 2020/07/08 21:46:31 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594215991662262000}
 2020/07/08 21:46:31 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594215991662399000}
+2020/07/10 15:29:34 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594366174860520000}
+2020/07/10 15:29:34 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594366174861220000}
+2020/07/10 15:30:22 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: State必须是[0 1]中的一个","time":1594366222034766000}
+2020/07/10 15:30:56 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594366256589148000}
+2020/07/10 15:31:11 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: State必须是[0 1]中的一个","time":1594366271422882000}
+2020/07/10 15:31:45 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594366305143254000}
+2020/07/10 15:33:00 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: Name长度不能超过100个字符","time":1594366380008661000}
+2020/07/10 15:33:15 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594366395365745000}
+2020/07/10 15:34:44 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: State必须是[0 1]中的一个","time":1594366484281717000}
+2020/07/10 15:34:51 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594366491914354000}
+2020/07/10 15:38:11 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594366691353503000}
+2020/07/10 15:38:11 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594366691353666000}
+2020/07/10 15:38:18 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594366698716367000}
+2020/07/10 15:38:18 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594366698716460000}
+2020/07/10 15:46:01 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594367161696579000}
+2020/07/10 15:46:01 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594367161696661000}
+2020/07/10 15:46:10 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594367170995943000}
+2020/07/10 15:46:10 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594367170996023000}
+2020/07/10 15:50:07 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594367407833522000}
+2020/07/10 15:50:07 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594367407833705000}
+2020/07/10 15:50:12 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594367412516657000}
+2020/07/10 15:50:12 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594367412516752000}
+2020/07/10 15:50:27 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594367427193069000}
+2020/07/10 15:50:27 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: ","time":1594367427193157000}
+2020/07/10 15:51:47 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594367507101624000}
+2020/07/10 15:51:47 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594367507101787000}
+2020/07/10 15:51:50 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594367510444386000}
+2020/07/10 15:51:50 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594367510444465000}

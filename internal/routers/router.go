@@ -2,6 +2,7 @@ package router
 
 import (
 	_ "github.com/Blackoutta/blog-service/docs"
+	"github.com/Blackoutta/blog-service/internal/middleware"
 	v1 "github.com/Blackoutta/blog-service/internal/routers/api/v1"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -12,6 +13,7 @@ func NewRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	r.Use(middleware.Translation())
 
 	// swagger setup
 	url := ginSwagger.URL("http://127.0.0.1:8080/swagger/doc.json")
