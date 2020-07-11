@@ -50,11 +50,12 @@ func BindAndValid(c *gin.Context, v interface{}) (bool, ValidErrors) {
 		if !ok {
 			errs = append(errs, &ValidError{
 				Key:     "其他错误",
-				Message: err.Error(),
+				Message: "请求参数错误或请求体格式错误，详细：" + err.Error(),
 			})
 			// 返回true代表有错误，但错误不是由于参数校验引起的，即错误是其他原因引起(如json格式不对)
 			return true, errs
 		}
+
 		// 如果是, 则翻译每个错误并把错误加到errs slice
 		for key, value := range verrs.Translate(trans) {
 			errs = append(errs, &ValidError{

@@ -2,9 +2,9 @@ package model
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/Blackoutta/blog-service/global"
-	"github.com/Blackoutta/blog-service/pkg/app"
 	"github.com/Blackoutta/blog-service/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -18,34 +18,6 @@ type Model struct {
 	ModifiedOn uint32 `json:"modified_on"`
 	DeletedOn  uint32 `json:"deleted_on"`
 	IsDel      uint8  `json:"is_del"`
-}
-
-type Tag struct {
-	*Model
-	Name  string `json:"name"`
-	State uint8  `json:"state"`
-}
-
-func (a Tag) TableName() string {
-	return "blog_tag"
-}
-
-type TagSwagger struct {
-	List  []*Tag
-	Pager *app.Pager
-}
-
-type Article struct {
-	*Model
-	Title         string `json:"title"`
-	Desc          string `json:"desc"`
-	Content       string `json:"content"`
-	CoverImageUrl string `json:"cover_image_url"`
-	State         uint8  `json:"state"`
-}
-
-func (a Article) TableName() string {
-	return "blog_article"
 }
 
 type ArticleTag struct {
@@ -77,4 +49,28 @@ func NewDBEngine(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
 	db.DB().SetMaxIdleConns(databaseSetting.MaxIdleConns)
 	db.DB().SetMaxOpenConns(databaseSetting.MaxOpenConns)
 	return db, nil
+}
+
+func updateTimeStampForCreateCallback(scope *gorm.Scope) {
+	if !scope.HasError() {
+		nowTime := time.Now().Unix()
+
+		if createTimeField, ok := scope.FieldByName("CreatedOn"); ok {
+			if createTimeField.IsBlank {
+				_ = createTimeField.Set(nowTime)
+			}
+		}
+
+		if modifyTimeField, ok := scope.FieldByName("ModifiedOn"); ok {
+			if modifyTimeField.IsBlank {
+				_ = modifyTimeField.Set(nowTime)
+			}
+		}
+	}
+}
+
+func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
+	if _, ok := scope.Get("gorm:update_column"); !ok {
+		_ = scope.SetColumn("ModifiedOn", time.Now().Unix())
+	}
 }

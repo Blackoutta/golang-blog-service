@@ -68,3 +68,42 @@
 2020/07/10 15:51:47 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594367507101787000}
 2020/07/10 15:51:50 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594367510444386000}
 2020/07/10 15:51:50 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594367510444465000}
+2020/07/10 16:33:20 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594370000759934000}
+2020/07/10 16:33:20 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594370000760180000}
+2020/07/10 16:33:24 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594370004402717000}
+2020/07/10 16:50:53 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594371053440060000}
+2020/07/10 16:50:53 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594371053440231000}
+2020/07/10 16:50:59 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594371059559235000}
+2020/07/10 16:53:40 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594371220220672000}
+2020/07/10 16:53:40 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594371220220818000}
+2020/07/10 16:53:45 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"sfsdf\": invalid syntax","time":1594371225463784000}
+2020/07/10 17:36:13 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594373773522286000}
+2020/07/10 17:36:13 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594373773522439000}
+2020/07/10 17:36:18 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: State必须是[0 1]中的一个","time":1594373778382986000}
+2020/07/10 17:37:33 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594373853509742000}
+2020/07/10 17:37:33 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594373853509898000}
+2020/07/10 17:37:50 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: Name长度不能超过10个字符,State必须是[0 1]中的一个","time":1594373870594927000}
+2020/07/10 17:38:08 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"@!\": invalid syntax","time":1594373888555283000}
+2020/07/10 17:39:25 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"jalksdjfklasfa\": invalid syntax","time":1594373965745738000}
+2020/07/10 17:47:48 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594374468156756000}
+2020/07/10 17:47:48 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594374468156910000}
+2020/07/10 17:47:53 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"jalksdjfklasfa\": invalid syntax","time":1594374473102601000}
+2020/07/10 17:48:25 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594374505040636000}
+2020/07/10 17:48:25 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594374505040779000}
+2020/07/10 17:48:28 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"jalksdjfklasfa\": invalid syntax","time":1594374508330303000}
+2020/07/10 17:50:02 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594374602052858000}
+2020/07/10 17:50:02 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594374602053011000}
+2020/07/10 17:50:04 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"jalksdjfklasfa\": invalid syntax","time":1594374604295974000}
+2020/07/10 17:50:39 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: strconv.ParseUint: parsing \"jalksdjfklasfa\": invalid syntax","time":1594374639675564000}
+2020/07/10 17:50:58 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: Name长度不能超过10个字符,State必须是[0 1]中的一个","time":1594374658180815000}
+2020/07/10 18:12:49 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594375969487578000}
+2020/07/10 18:12:49 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594375969487743000}
+2020/07/10 18:12:53 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: Name长度不能超过10个字符,State必须是[0 1]中的一个","time":1594375973590919000}
+2020/07/10 18:12:58 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: State必须是[0 1]中的一个","time":1594375978328047000}
+2020/07/10 18:13:02 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: \u0008参数类型错误，请检查请求参数中的数据类型，详细：strconv.ParseUint: parsing \"sadfasf\": invalid syntax","time":1594375982692778000}
+2020/07/10 18:14:29 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594376069633255000}
+2020/07/10 18:14:29 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594376069633445000}
+2020/07/10 18:14:44 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: 参数类型错误，请检查请求参数中的数据类型，详细：strconv.ParseUint: parsing \"sadfasf\": invalid syntax","time":1594376084345630000}
+2020/07/10 18:22:43 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594376563804257000}
+2020/07/10 18:22:43 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594376563804413000}
+2020/07/10 18:22:48 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: 请求参数错误或请求体格式错误，详细：strconv.ParseUint: parsing \"sadfasf\": invalid syntax","time":1594376568675198000}
