@@ -107,3 +107,5 @@
 2020/07/10 18:22:43 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594376563804257000}
 2020/07/10 18:22:43 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594376563804413000}
 2020/07/10 18:22:48 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"error","message":"app.BindAndValid errs: 请求参数错误或请求体格式错误，详细：strconv.ParseUint: parsing \"sadfasf\": invalid syntax","time":1594376568675198000}
+2020/07/11 17:15:09 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"debug","message":"hello world!","time":1594458909025640000}
+2020/07/11 17:15:09 {"callers":["/Users/huyangyi/Desktop/blog-service/main.go: 28 main.init.0"],"level":"info","message":"hello world!","time":1594458909025777000}

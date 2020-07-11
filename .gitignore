@@ -1,3 +1,5 @@
 scripts/testdb
 .vscode
 .idea
+storage/logs
+exp
