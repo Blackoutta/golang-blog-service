@@ -4,6 +4,7 @@ import (
 	"github.com/Blackoutta/blog-service/global"
 	"github.com/Blackoutta/blog-service/internal/service"
 	"github.com/Blackoutta/blog-service/pkg/app"
+	"github.com/Blackoutta/blog-service/pkg/convert"
 	"github.com/Blackoutta/blog-service/pkg/errcode"
 	"github.com/gin-gonic/gin"
 )
@@ -17,14 +18,14 @@ func NewTag() Tag {
 func (t Tag) Get(c *gin.Context) {}
 
 // @Summary 获取多个标签
-// Produce json
-// @Param name query string false "标签名称" maxlength(100)
-// @Param state query int false "标签名称" Enums(0, 1) default(1)
+// @Produce json
+// @Param name query string false "标签名称, 最大长度100"
+// @Param state query int false "标签状态, 0:禁用  1:启用  2:全部"
 // @Param page query int false "页码"
 // @Param page_size query int false "每页数量"
 // @Success 200 {object} model.TagSwagger "成功"
-// @Failture 400 {object} errcode.Error "请求错误"
-// @Failture 500 {object} errcode.Error "内部服务错误"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部服务错误"
 // @Router /api/v1/tags [get]
 func (t Tag) List(c *gin.Context) {
 	// 初始化请求体和响应体
@@ -62,6 +63,101 @@ func (t Tag) List(c *gin.Context) {
 	return
 }
 
-func (t Tag) Create(c *gin.Context) {}
-func (t Tag) Update(c *gin.Context) {}
-func (t Tag) Delete(c *gin.Context) {}
+// @Summary 创建标签
+// @Produce json
+// @Param CreateTagRequest body service.CreateTagRequest true "创建标签json请求体"
+// @Success 200 {object} model.Tag "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部服务错误"
+// @Router /api/v1/tags [post]
+func (t Tag) Create(c *gin.Context) {
+	param := service.CreateTagRequest{}
+	response := app.NewResponse(c)
+
+	invalid, errs := app.BindAndValid(c, &param)
+	if invalid {
+		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+
+	svc := service.New(c)
+	err := svc.CreateTag(&param)
+	if err != nil {
+		global.Logger.Errorf("svc.CreateTag err: %v", err)
+		response.ToErrorResponse(errcode.ErrorCreateTagFail)
+		return
+	}
+
+	response.ToResponse(gin.H{})
+	return
+}
+
+// @Summary 更新标签
+// @Produce json
+// @Param name body string true "标签名称, 最大长度100"
+// @Param state body int true "标签状态, 0:禁用  1:启用"
+// @Param modified_by body string true "创建人"
+// @Success 200 {object} model.TagSwagger "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部服务错误"
+// @Router /api/v1/tags/{id} [put]
+func (t Tag) Update(c *gin.Context) {
+	param := service.UpdateTagRequest{
+		ID: convert.StrTo(c.Param("id")).MustUint32(),
+	}
+	response := app.NewResponse(c)
+
+	invalid, errs := app.BindAndValid(c, &param)
+	if invalid {
+		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+
+	param.ID = convert.StrTo(c.Param("id")).MustUint32()
+
+	svc := service.New(c)
+	err := svc.UpdateTag(&param)
+	if err != nil {
+		global.Logger.Errorf("svc.UpdateTag err:", err)
+		response.ToErrorResponse(errcode.ErrorUpdateTagFail)
+		return
+	}
+
+	response.ToResponse(gin.H{})
+	return
+}
+
+// @Summary 删除标签
+// @Produce json
+// @Success 200 {object} model.TagSwagger "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部服务错误"
+// @Router /api/v1/tags/{id} [delete]
+func (t Tag) Delete(c *gin.Context) {
+	param := service.DeleteTagRequest{
+		ID: convert.StrTo(c.Param("id")).MustUint32(),
+	}
+	response := app.NewResponse(c)
+
+	invalid, errs := app.BindAndValid(c, &param)
+	if invalid {
+		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+
+	param.ID = convert.StrTo(c.Param("id")).MustUint32()
+
+	svc := service.New(c)
+	err := svc.DeleteTag(&param)
+	if err != nil {
+		global.Logger.Errorf("svc.DeleteTag err:", err)
+		response.ToErrorResponse(errcode.ErrorDeleteTagFail)
+		return
+	}
+
+	response.ToResponse(gin.H{})
+	return
+}

@@ -20,6 +20,8 @@ type TagSwagger struct {
 	Pager *app.Pager
 }
 
+const ShowAllStates uint8 = 2
+
 func (t Tag) Count(db *gorm.DB) (int, error) {
 	var count int
 	// 如果用户查询时输入了name, 根据name进行筛选
@@ -27,7 +29,9 @@ func (t Tag) Count(db *gorm.DB) (int, error) {
 		db = db.Where("name = ?", t.Name)
 	}
 	// 根据用户输入的state进行筛选
-	db = db.Where("state = ?", t.State)
+	if t.State != ShowAllStates {
+		db = db.Where("state = ?", t.State)
+	}
 	// 使用model对数据库进行查询并将结果写入到count中
 	if err := db.Model(&t).Where("is_del = ?", 0).Count(&count).Error; err != nil {
 		return 0, err
@@ -44,7 +48,10 @@ func (t Tag) List(db *gorm.DB, pageOffset, pageSize int) ([]*Tag, error) {
 	if t.Name != "" {
 		db = db.Where("name = ?", t.Name)
 	}
-	db = db.Where("state = ?", t.State)
+
+	if t.State != ShowAllStates {
+		db = db.Where("state = ?", t.State)
+	}
 	if err = db.Where("is_del = ?", 0).Find(&tags).Error; err != nil {
 		return nil, err
 	}
@@ -56,7 +63,11 @@ func (t Tag) Create(db *gorm.DB) error {
 }
 
 func (t Tag) Update(db *gorm.DB, values interface{}) error {
-	return db.Model(&t).Where("id = ? AND is_del = ?", t.ID, 0).Updates(values).Error
+	err := db.Model(&t).Where("id = ? AND is_del = ?", t.ID, 0).Updates(values).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t Tag) Delete(db *gorm.DB) error {

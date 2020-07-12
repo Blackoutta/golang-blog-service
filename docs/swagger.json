@@ -10,23 +10,20 @@
     "paths": {
         "/api/v1/tags": {
             "get": {
+                "produces": [
+                    "application/json"
+                ],
                 "summary": "获取多个标签",
                 "parameters": [
                     {
-                        "maxLength": 100,
                         "type": "string",
-                        "description": "标签名称",
+                        "description": "标签名称, 最大长度100",
                         "name": "name",
                         "in": "query"
                     },
                     {
-                        "enum": [
-                            0,
-                            1
-                        ],
                         "type": "integer",
-                        "default": 1,
-                        "description": "标签名称",
+                        "description": "标签状态, 0:禁用  1:启用  2:全部",
                         "name": "state",
                         "in": "query"
                     },
@@ -49,6 +46,138 @@
                         "schema": {
                             "$ref": "#/definitions/model.TagSwagger"
                         }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "创建标签",
+                "parameters": [
+                    {
+                        "description": "创建标签json请求体",
+                        "name": "CreateTagRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/service.CreateTagRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tags/{id}": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "更新标签",
+                "parameters": [
+                    {
+                        "description": "标签名称, 最大长度100",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "标签状态, 0:禁用  1:启用",
+                        "name": "state",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "创建人",
+                        "name": "modified_by",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.TagSwagger"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "删除标签",
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.TagSwagger"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
                     }
                 }
             }
@@ -66,6 +195,23 @@
                 },
                 "total_rows": {
                     "type": "integer"
+                }
+            }
+        },
+        "errcode.Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "msg": {
+                    "type": "string"
                 }
             }
         },
@@ -113,6 +259,27 @@
                 "pager": {
                     "type": "object",
                     "$ref": "#/definitions/app.Pager"
+                }
+            }
+        },
+        "service.CreateTagRequest": {
+            "type": "object",
+            "required": [
+                "created_by",
+                "name"
+            ],
+            "properties": {
+                "created_by": {
+                    "type": "string",
+                    "example": "some_user_name"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "some_tag_name"
+                },
+                "state": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         }

@@ -7,30 +7,30 @@ import (
 
 // requests
 type CountTagRequest struct {
-	Name  string `form:"name" binding:"max=100"`
-	State uint8  `form:"state,default=1" binding:"oneof=0 1"`
+	Name  string `json:"name" binding:"max=100"`
+	State uint8  `json:"state,default=1" binding:"oneof=0 1"`
 }
 
 type TagListRequest struct {
-	Name  string `form:"name" binding:"max=10"`
-	State uint8  `form:"state,default=1" binding:"oneof=0 1,excludesrune"`
+	Name  string `json:"name" binding:"max=10"`
+	State uint8  `json:"state,default=2" binding:"oneof=0 1 2"`
 }
 
 type CreateTagRequest struct {
-	Name      string `form:"name" binding:"required,min=3,max=100"`
-	CreatedBy string `form:"created_by" binding:"required,min=3,max=100"`
-	State     uint8  `form:"state,default=1" binding:"oneof=0 1"`
+	Name      string `json:"name" example:"some_tag_name" binding:"required,min=3,max=100"`
+	CreatedBy string `json:"created_by" example:"some_user_name" binding:"required,min=3,max=100"`
+	State     uint8  `json:"state,default=1" example:"1" binding:"oneof=0 1"`
 }
 
 type UpdateTagRequest struct {
-	ID         uint32 `form:"id" binding:"required, gte=1"`
-	Name       string `form:"name" binding:"required,min=3,max=100"`
-	State      uint8  `form:"state,default=1" binding:"required,oneof=0 1"`
-	ModifiedBy string `form:"modified_by" binding:"required,min=3,max=100"`
+	ID         uint32 `json:"id" binding:"required,gte=1"`
+	Name       string `json:"name" binding:"required,min=3,max=100"`
+	State      *uint8 `json:"state" binding:"required,oneof=0 1"`
+	ModifiedBy string `json:"modified_by" binding:"required,min=3,max=100"`
 }
 
 type DeleteTagRequest struct {
-	ID uint32 `form:"id" binding:"required,gte=1"`
+	ID uint32 `json:"id" binding:"required,gte=1"`
 }
 
 // service
@@ -46,7 +46,7 @@ func (svc *Service) CreateTag(param *CreateTagRequest) error {
 }
 
 func (svc *Service) UpdateTag(param *UpdateTagRequest) error {
-	return svc.dao.UpdateTag(param.ID, param.Name, param.State, param.ModifiedBy)
+	return svc.dao.UpdateTag(param.ID, param.Name, *param.State, param.ModifiedBy)
 }
 
 func (svc *Service) DeleteTag(param *DeleteTagRequest) error {
