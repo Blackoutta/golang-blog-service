@@ -7,36 +7,45 @@ import (
 
 // requests
 type CountTagRequest struct {
-	Name  string `json:"name" binding:"max=100"`
-	State uint8  `json:"state,default=1" binding:"oneof=0 1"`
+	Name  string `form:"name" binding:"max=100"`
+	State uint8  `form:"state,default=1" binding:"oneof=0 1 2"`
+}
+
+type GetTagRequest struct {
+	Id uint32 `form:"id" binding:"gt=0"`
 }
 
 type TagListRequest struct {
-	Name  string `json:"name" binding:"max=10"`
-	State uint8  `json:"state,default=2" binding:"oneof=0 1 2"`
+	Name  string `form:"name" binding:"max=10"`
+	State uint8  `form:"state,default=0" binding:"oneof=0 1 2"`
 }
 
 type CreateTagRequest struct {
 	Name      string `json:"name" example:"some_tag_name" binding:"required,min=3,max=100"`
 	CreatedBy string `json:"created_by" example:"some_user_name" binding:"required,min=3,max=100"`
-	State     uint8  `json:"state,default=1" example:"1" binding:"oneof=0 1"`
+	State     uint8  `json:"state,default=1" example:"1" binding:"oneof=1 2"`
 }
 
 type UpdateTagRequest struct {
-	ID         uint32 `json:"id" binding:"required,gte=1"`
+	ID         uint32 `form:"id" binding:"required,gte=1"`
 	Name       string `json:"name" binding:"required,min=3,max=100"`
-	State      *uint8 `json:"state" binding:"required,oneof=0 1"`
+	State      *uint8 `json:"state" binding:"required,oneof=1 2"`
 	ModifiedBy string `json:"modified_by" binding:"required,min=3,max=100"`
 }
 
 type DeleteTagRequest struct {
-	ID uint32 `json:"id" binding:"required,gte=1"`
+	ID uint32 `form:"id" binding:"required,gte=1"`
 }
 
 // service
 func (svc *Service) CountTag(param *CountTagRequest) (int, error) {
 	return svc.dao.CountTag(param.Name, param.State)
 }
+
+func (svc *Service) GetTag(param *GetTagRequest) (*model.Tag, error) {
+	return svc.dao.GetTag(param.Id)
+}
+
 func (svc *Service) GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.Tag, error) {
 	return svc.dao.GetTagList(param.Name, param.State, pager.Page, pager.PageSize)
 }

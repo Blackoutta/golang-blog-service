@@ -29,14 +29,24 @@ func (t Tag) Count(db *gorm.DB) (int, error) {
 		db = db.Where("name = ?", t.Name)
 	}
 	// 根据用户输入的state进行筛选
-	if t.State != ShowAllStates {
+	if t.State != 0 {
 		db = db.Where("state = ?", t.State)
 	}
+
 	// 使用model对数据库进行查询并将结果写入到count中
 	if err := db.Model(&t).Where("is_del = ?", 0).Count(&count).Error; err != nil {
 		return 0, err
 	}
 	return count, nil
+}
+
+func (t Tag) Get(db *gorm.DB) (*Tag, error) {
+	var tag Tag
+	err := db.Where("is_del = ?", 0).Where("id = ?", t.Model.ID).Find(&tag).Error
+	if err != nil {
+		return nil, err
+	}
+	return &tag, nil
 }
 
 func (t Tag) List(db *gorm.DB, pageOffset, pageSize int) ([]*Tag, error) {
@@ -49,12 +59,14 @@ func (t Tag) List(db *gorm.DB, pageOffset, pageSize int) ([]*Tag, error) {
 		db = db.Where("name = ?", t.Name)
 	}
 
-	if t.State != ShowAllStates {
+	if t.State != 0 {
 		db = db.Where("state = ?", t.State)
 	}
-	if err = db.Where("is_del = ?", 0).Find(&tags).Error; err != nil {
+
+	if err = db.Where("is_del = ?", 0).Order("id DESC").Find(&tags).Error; err != nil {
 		return nil, err
 	}
+
 	return tags, nil
 }
 

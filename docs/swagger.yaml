@@ -79,7 +79,7 @@ paths:
         in: query
         name: name
         type: string
-      - description: 标签状态, 0:禁用  1:启用  2:全部
+      - description: 标签状态, 0:全部  1:启用  2:禁用
         in: query
         name: state
         type: integer
@@ -133,6 +133,12 @@ paths:
       summary: 创建标签
   /api/v1/tags/{id}:
     delete:
+      parameters:
+      - description: Tag ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -149,6 +155,29 @@ paths:
           schema:
             $ref: '#/definitions/errcode.Error'
       summary: 删除标签
+    get:
+      parameters:
+      - description: 标签id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Tag'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取单个标签
     put:
       parameters:
       - description: 标签名称, 最大长度100
@@ -157,7 +186,7 @@ paths:
         required: true
         schema:
           type: string
-      - description: 标签状态, 0:禁用  1:启用
+      - description: 标签状态, 1:启用  2:禁用
         in: body
         name: state
         required: true

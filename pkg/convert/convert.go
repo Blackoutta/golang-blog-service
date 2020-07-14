@@ -18,8 +18,21 @@ func (s StrTo) MustInt() int {
 	return v
 }
 
+func (s StrTo) Uint8() (uint8, error) {
+	v, err := strconv.Atoi(s.String())
+	return uint8(v), err
+}
+
+func (s StrTo) MustUint8() uint8 {
+	v, _ := s.Uint8()
+	return v
+}
+
 func (s StrTo) Uint32() (uint32, error) {
 	v, err := strconv.Atoi(s.String())
+	if v < 1 {
+		return 0, nil
+	}
 	return uint32(v), err
 }
 

@@ -7,6 +7,7 @@ import (
 	"github.com/Blackoutta/blog-service/pkg/convert"
 	"github.com/Blackoutta/blog-service/pkg/errcode"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
 type Tag struct{}
@@ -15,12 +16,43 @@ func NewTag() Tag {
 	return Tag{}
 }
 
-func (t Tag) Get(c *gin.Context) {}
+// @Summary 获取单个标签
+// @Produce json
+// @Param id path int true "标签id"
+// @Success 200 {object} model.Tag "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部服务错误"
+// @Router /api/v1/tags/{id} [get]
+func (t Tag) Get(c *gin.Context) {
+	param := service.GetTagRequest{
+		Id: convert.StrTo(c.Param("id")).MustUint32(),
+	}
+	response := app.NewResponse(c)
+	invalid, errs := app.BindAndValid(c, &param)
+	if invalid {
+		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+	svc := service.New(c)
+	tag, err := svc.GetTag(&param)
+	if err != nil {
+		if err.Error() == gorm.ErrRecordNotFound.Error() {
+			response.ToErrorResponse(errcode.NotFound.WithDetails(err.Error()))
+			return
+		}
+		global.Logger.Errorf("svc.GetTag errs: %v", errs)
+		response.ToErrorResponse(errcode.ErrorGetTagFail.WithDetails(err.Error()))
+		return
+	}
+	response.ToResponse(&tag)
+	return
+}
 
 // @Summary 获取多个标签
 // @Produce json
 // @Param name query string false "标签名称, 最大长度100"
-// @Param state query int false "标签状态, 0:禁用  1:启用  2:全部"
+// @Param state query int false "标签状态, 0:全部  1:启用  2:禁用"
 // @Param page query int false "页码"
 // @Param page_size query int false "每页数量"
 // @Success 200 {object} model.TagSwagger "成功"
@@ -96,7 +128,7 @@ func (t Tag) Create(c *gin.Context) {
 // @Summary 更新标签
 // @Produce json
 // @Param name body string true "标签名称, 最大长度100"
-// @Param state body int true "标签状态, 0:禁用  1:启用"
+// @Param state body int true "标签状态, 1:启用  2:禁用"
 // @Param modified_by body string true "创建人"
 // @Success 200 {object} model.TagSwagger "成功"
 // @Failure 400 {object} errcode.Error "请求错误"
@@ -131,6 +163,7 @@ func (t Tag) Update(c *gin.Context) {
 
 // @Summary 删除标签
 // @Produce json
+// @Param id path int true "Tag ID"
 // @Success 200 {object} model.TagSwagger "成功"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部服务错误"
