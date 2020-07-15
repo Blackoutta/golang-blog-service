@@ -1,28 +1,49 @@
 package dao
 
 import (
+	"github.com/Blackoutta/blog-service/global"
 	"github.com/Blackoutta/blog-service/internal/model"
 	"github.com/Blackoutta/blog-service/pkg/app"
+	"github.com/jinzhu/gorm"
 )
 
-func (d *Dao) CountTag(name string, state uint8) (int, error) {
+type TagDao interface {
+	CountTag(name string, state uint8) (int, error)
+	GetTag(id uint32) (*model.Tag, error)
+	GetTagList(name string, state uint8, page, pageSize int) ([]*model.Tag, error)
+	CreateTag(name string, state uint8, createdBy string) error
+	UpdateTag(id uint32, name string, state uint8, modifiedBy string) error
+	ChangeState(id uint32, state uint8, modifiedBy string) error
+	DeleteTag(id uint32) error
+}
+
+type tagDao struct {
+	engine *gorm.DB
+}
+
+func NewTagDao(engine *gorm.DB) TagDao {
+	return &tagDao{
+		engine: global.DBEngine,
+	}
+}
+
+func (d *tagDao) CountTag(name string, state uint8) (int, error) {
 	tag := model.Tag{Name: name, State: state}
 	return tag.Count(d.engine)
 }
 
-func (d *Dao) GetTag(id uint32) (*model.Tag, error) {
+func (d *tagDao) GetTag(id uint32) (*model.Tag, error) {
 	tag := model.Tag{Model: &model.Model{ID: id}}
 	return tag.Get(d.engine)
-
 }
 
-func (d *Dao) GetTagList(name string, state uint8, page, pageSize int) ([]*model.Tag, error) {
+func (d *tagDao) GetTagList(name string, state uint8, page, pageSize int) ([]*model.Tag, error) {
 	tag := model.Tag{Name: name, State: state}
 	pageOffset := app.GetPageOffset(page, pageSize)
 	return tag.List(d.engine, pageOffset, pageSize)
 }
 
-func (d *Dao) CreateTag(name string, state uint8, createdBy string) error {
+func (d *tagDao) CreateTag(name string, state uint8, createdBy string) error {
 	tag := model.Tag{
 		Name:  name,
 		State: state,
@@ -33,7 +54,7 @@ func (d *Dao) CreateTag(name string, state uint8, createdBy string) error {
 	return tag.Create(d.engine)
 }
 
-func (d *Dao) UpdateTag(id uint32, name string, state uint8, modifiedBy string) error {
+func (d *tagDao) UpdateTag(id uint32, name string, state uint8, modifiedBy string) error {
 	tag := model.Tag{
 		Model: &model.Model{
 			ID: id,
@@ -49,7 +70,7 @@ func (d *Dao) UpdateTag(id uint32, name string, state uint8, modifiedBy string) 
 	return tag.Update(d.engine, values)
 }
 
-func (d *Dao) ChangeState(id uint32, state uint8, modifiedBy string) error {
+func (d *tagDao) ChangeState(id uint32, state uint8, modifiedBy string) error {
 	tag := model.Tag{
 		State: state,
 		Model: &model.Model{
@@ -61,7 +82,7 @@ func (d *Dao) ChangeState(id uint32, state uint8, modifiedBy string) error {
 
 }
 
-func (d *Dao) DeleteTag(id uint32) error {
+func (d *tagDao) DeleteTag(id uint32) error {
 	tag := model.Tag{
 		Model: &model.Model{
 			ID: id,

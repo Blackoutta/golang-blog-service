@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/Blackoutta/blog-service/global"
+	"github.com/Blackoutta/blog-service/internal/dao"
 	"github.com/Blackoutta/blog-service/internal/service"
 	"github.com/Blackoutta/blog-service/pkg/app"
 	"github.com/Blackoutta/blog-service/pkg/convert"
@@ -42,7 +43,7 @@ func (t Tag) Get(c *gin.Context) {
 	}
 
 	if t.Service == nil {
-		t.BuildService(service.NewTagService(c))
+		t.BuildService(service.NewTagService(c, dao.NewTagDao(global.DBEngine)))
 	}
 
 	tag, err := t.Service.GetTag(&param)
