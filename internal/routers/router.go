@@ -2,8 +2,8 @@ package router
 
 import (
 	_ "github.com/Blackoutta/blog-service/docs"
+	v1 "github.com/Blackoutta/blog-service/internal/api/v1"
 	"github.com/Blackoutta/blog-service/internal/middleware"
-	v1 "github.com/Blackoutta/blog-service/internal/routers/api/v1"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"

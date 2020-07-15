@@ -54,31 +54,41 @@ type DeleteTagRequest struct {
 	ID uint32 `form:"id" binding:"gt=0"`
 }
 
+type TagService interface {
+	CountTag(param *CountTagRequest) (int, error)
+	GetTag(param *GetTagRequest) (*model.Tag, error)
+	GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.Tag, error)
+	CreateTag(param *CreateTagRequest) error
+	UpdateTag(param *UpdateTagRequest) error
+	ChangeState(param *ChangeStateRequest) error
+	DeleteTag(param *DeleteTagRequest) error
+}
+
 // service
-func (svc *Service) CountTag(param *CountTagRequest) (int, error) {
+func (svc *tagService) CountTag(param *CountTagRequest) (int, error) {
 	return svc.dao.CountTag(param.Name, param.State)
 }
 
-func (svc *Service) GetTag(param *GetTagRequest) (*model.Tag, error) {
+func (svc *tagService) GetTag(param *GetTagRequest) (*model.Tag, error) {
 	return svc.dao.GetTag(param.Id)
 }
 
-func (svc *Service) GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.Tag, error) {
+func (svc *tagService) GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.Tag, error) {
 	return svc.dao.GetTagList(param.Name, param.State, pager.Page, pager.PageSize)
 }
 
-func (svc *Service) CreateTag(param *CreateTagRequest) error {
+func (svc *tagService) CreateTag(param *CreateTagRequest) error {
 	return svc.dao.CreateTag(param.Name, param.State, param.CreatedBy)
 }
 
-func (svc *Service) UpdateTag(param *UpdateTagRequest) error {
+func (svc *tagService) UpdateTag(param *UpdateTagRequest) error {
 	return svc.dao.UpdateTag(param.ID, param.Name, *param.State, param.ModifiedBy)
 }
 
-func (svc *Service) ChangeState(param *ChangeStateRequest) error {
+func (svc *tagService) ChangeState(param *ChangeStateRequest) error {
 	return svc.dao.ChangeState(param.ID, *param.State, param.ModifiedBy)
 }
 
-func (svc *Service) DeleteTag(param *DeleteTagRequest) error {
+func (svc *tagService) DeleteTag(param *DeleteTagRequest) error {
 	return svc.dao.DeleteTag(param.ID)
 }

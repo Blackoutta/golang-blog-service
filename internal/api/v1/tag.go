@@ -10,10 +10,16 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type Tag struct{}
+type Tag struct {
+	Service service.TagService
+}
 
 func NewTag() Tag {
 	return Tag{}
+}
+
+func (t *Tag) BuildService(svc service.TagService) {
+	t.Service = svc
 }
 
 // @Summary 获取单个标签
@@ -34,8 +40,12 @@ func (t Tag) Get(c *gin.Context) {
 		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
 	}
-	svc := service.New(c)
-	tag, err := svc.GetTag(&param)
+
+	if t.Service == nil {
+		t.BuildService(service.NewTagService(c))
+	}
+
+	tag, err := t.Service.GetTag(&param)
 	if err != nil {
 		if err.Error() == gorm.ErrRecordNotFound.Error() {
 			response.ToErrorResponse(errcode.NotFound.WithDetails(err.Error()))
@@ -71,7 +81,7 @@ func (t Tag) List(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c)
+	svc := service.NewTagService(c)
 	pager := app.Pager{
 		Page:     app.GetPage(c),
 		PageSize: app.GetPageSize(c),
@@ -113,7 +123,7 @@ func (t Tag) Create(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c)
+	svc := service.NewTagService(c)
 	err := svc.CreateTag(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.CreateTag err: %v", err)
@@ -146,7 +156,7 @@ func (t Tag) ChangeState(c *gin.Context) {
 	}
 
 	param.ID = id
-	svc := service.New(c)
+	svc := service.NewTagService(c)
 	err := svc.ChangeState(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.ChangeState err:", err)
@@ -179,7 +189,7 @@ func (t Tag) Update(c *gin.Context) {
 
 	param.ID = convert.StrTo(c.Param("id")).MustUint32()
 
-	svc := service.New(c)
+	svc := service.NewTagService(c)
 	err := svc.UpdateTag(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.UpdateTag err:", err)
@@ -213,7 +223,7 @@ func (t Tag) Delete(c *gin.Context) {
 
 	param.ID = convert.StrTo(c.Param("id")).MustUint32()
 
-	svc := service.New(c)
+	svc := service.NewTagService(c)
 	err := svc.DeleteTag(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.DeleteTag err:", err)

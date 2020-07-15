@@ -6,15 +6,15 @@ import (
 	"golang.org/x/net/context"
 )
 
-type Service struct {
+type tagService struct {
 	ctx context.Context
 	dao *dao.Dao
 }
 
-func New(ctx context.Context) Service {
-	svc := Service{
+func NewTagService(ctx context.Context) TagService {
+	svc := tagService{
 		ctx: ctx,
 	}
 	svc.dao = dao.New(global.DBEngine)
-	return svc
+	return &svc
 }
