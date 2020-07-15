@@ -35,8 +35,6 @@ func init() {
 // @version 1.0
 // @description 这是我的博客项目
 func main() {
-	global.Logger.Debug("hello world!")
-	global.Logger.Info("hello world!")
 	gin.SetMode(global.ServerSetting.RunMode)
 	router := router.NewRouter()
 	s := &http.Server{
@@ -46,6 +44,7 @@ func main() {
 		WriteTimeout:   global.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
+	global.Logger.Infof("service booted, address: %v", s.Addr)
 	s.ListenAndServe()
 }
 
