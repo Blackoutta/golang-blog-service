@@ -82,6 +82,14 @@ func (t Tag) Update(db *gorm.DB, values interface{}) error {
 	return nil
 }
 
+func (t Tag) ChangeState(db *gorm.DB) error {
+	err := db.Model(&t).Where("id = ? AND is_del = ?", t.ID, 0).Updates(&t).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t Tag) Delete(db *gorm.DB) error {
 	return db.Where("id = ? AND is_del = ?", t.Model.ID, 0).Delete(&t).Error
 }

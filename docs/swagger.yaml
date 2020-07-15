@@ -50,6 +50,13 @@ definitions:
         $ref: '#/definitions/app.Pager'
         type: object
     type: object
+  service.ChangeStateRequestSwagger:
+    properties:
+      modifiedBy:
+        type: string
+      state:
+        type: integer
+    type: object
   service.CreateTagRequest:
     properties:
       created_by:
@@ -64,6 +71,15 @@ definitions:
     required:
     - created_by
     - name
+    type: object
+  service.UpdateTagRequestSwagger:
+    properties:
+      modified_by:
+        type: string
+      name:
+        type: string
+      state:
+        type: integer
     type: object
 info:
   contact: {}
@@ -180,24 +196,17 @@ paths:
       summary: 获取单个标签
     put:
       parameters:
-      - description: 标签名称, 最大长度100
+      - description: 标签id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新标签结构体
         in: body
-        name: name
+        name: UpdateTagRequest
         required: true
         schema:
-          type: string
-      - description: 标签状态, 1:启用  2:禁用
-        in: body
-        name: state
-        required: true
-        schema:
-          type: integer
-      - description: 创建人
-        in: body
-        name: modified_by
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/service.UpdateTagRequestSwagger'
       produces:
       - application/json
       responses:
@@ -214,4 +223,34 @@ paths:
           schema:
             $ref: '#/definitions/errcode.Error'
       summary: 更新标签
+  /api/v1/tags/state/{id}:
+    patch:
+      parameters:
+      - description: 标签id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新标签状态json请求体
+        in: body
+        name: ChangeStateRequest
+        required: true
+        schema:
+          $ref: '#/definitions/service.ChangeStateRequestSwagger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.TagSwagger'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新标签状态
 swagger: "2.0"

@@ -99,6 +99,52 @@
                 }
             }
         },
+        "/api/v1/tags/state/{id}": {
+            "patch": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "更新标签状态",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "标签id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "更新标签状态json请求体",
+                        "name": "ChangeStateRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/service.ChangeStateRequestSwagger"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.TagSwagger"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/tags/{id}": {
             "get": {
                 "produces": [
@@ -142,30 +188,19 @@
                 "summary": "更新标签",
                 "parameters": [
                     {
-                        "description": "标签名称, 最大长度100",
-                        "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "integer",
+                        "description": "标签id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     },
                     {
-                        "description": "标签状态, 1:启用  2:禁用",
-                        "name": "state",
+                        "description": "更新标签结构体",
+                        "name": "UpdateTagRequest",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "创建人",
-                        "name": "modified_by",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/service.UpdateTagRequestSwagger"
                         }
                     }
                 ],
@@ -306,6 +341,17 @@
                 }
             }
         },
+        "service.ChangeStateRequestSwagger": {
+            "type": "object",
+            "properties": {
+                "modifiedBy": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "integer"
+                }
+            }
+        },
         "service.CreateTagRequest": {
             "type": "object",
             "required": [
@@ -324,6 +370,20 @@
                 "state": {
                     "type": "integer",
                     "example": 1
+                }
+            }
+        },
+        "service.UpdateTagRequestSwagger": {
+            "type": "object",
+            "properties": {
+                "modified_by": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "integer"
                 }
             }
         }

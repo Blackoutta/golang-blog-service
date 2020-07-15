@@ -27,14 +27,31 @@ type CreateTagRequest struct {
 }
 
 type UpdateTagRequest struct {
-	ID         uint32 `form:"id" binding:"required,gte=1"`
+	ID         uint32 `form:"id"`
 	Name       string `json:"name" binding:"required,min=3,max=100"`
 	State      *uint8 `json:"state" binding:"required,oneof=1 2"`
 	ModifiedBy string `json:"modified_by" binding:"required,min=3,max=100"`
 }
 
+type UpdateTagRequestSwagger struct {
+	Name       string `json:"name"`
+	State      *uint8 `json:"state"`
+	ModifiedBy string `json:"modified_by"`
+}
+
+type ChangeStateRequest struct {
+	ID         uint32 `form:"id"`
+	State      *uint8 `json:"state" binding:"required,oneof=1 2"`
+	ModifiedBy string `json:"modified_by" binding:"required,min=3,max=100"`
+}
+
+type ChangeStateRequestSwagger struct {
+	State      *uint8
+	ModifiedBy string
+}
+
 type DeleteTagRequest struct {
-	ID uint32 `form:"id" binding:"required,gte=1"`
+	ID uint32 `form:"id" binding:"gt=0"`
 }
 
 // service
@@ -56,6 +73,10 @@ func (svc *Service) CreateTag(param *CreateTagRequest) error {
 
 func (svc *Service) UpdateTag(param *UpdateTagRequest) error {
 	return svc.dao.UpdateTag(param.ID, param.Name, *param.State, param.ModifiedBy)
+}
+
+func (svc *Service) ChangeState(param *ChangeStateRequest) error {
+	return svc.dao.ChangeState(param.ID, *param.State, param.ModifiedBy)
 }
 
 func (svc *Service) DeleteTag(param *DeleteTagRequest) error {

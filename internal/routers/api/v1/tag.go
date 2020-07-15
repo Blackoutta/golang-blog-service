@@ -41,7 +41,7 @@ func (t Tag) Get(c *gin.Context) {
 			response.ToErrorResponse(errcode.NotFound.WithDetails(err.Error()))
 			return
 		}
-		global.Logger.Errorf("svc.GetTag errs: %v", errs)
+		global.Logger.Errorf("svc.GetTag errs: %v", err)
 		response.ToErrorResponse(errcode.ErrorGetTagFail.WithDetails(err.Error()))
 		return
 	}
@@ -125,19 +125,49 @@ func (t Tag) Create(c *gin.Context) {
 	return
 }
 
+// @Summary 更新标签状态
+// @Produce json
+// @Param id path int true "标签id"
+// @Param ChangeStateRequest body service.ChangeStateRequestSwagger true "更新标签状态json请求体"
+// @Success 200 {object} model.TagSwagger "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部服务错误"
+// @Router /api/v1/tags/state/{id} [patch]
+func (t Tag) ChangeState(c *gin.Context) {
+	id := convert.StrTo(c.Param("id")).MustUint32()
+	param := service.ChangeStateRequest{}
+	response := app.NewResponse(c)
+
+	invalid, errs := app.BindAndValid(c, &param)
+	if invalid {
+		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+
+	param.ID = id
+	svc := service.New(c)
+	err := svc.ChangeState(&param)
+	if err != nil {
+		global.Logger.Errorf("svc.ChangeState err:", err)
+		response.ToErrorResponse(errcode.ErrorUpdateTagFail)
+		return
+	}
+
+	response.ToResponse(gin.H{})
+	return
+}
+
 // @Summary 更新标签
 // @Produce json
-// @Param name body string true "标签名称, 最大长度100"
-// @Param state body int true "标签状态, 1:启用  2:禁用"
-// @Param modified_by body string true "创建人"
+// @Param id path int true "标签id"
+// @Param UpdateTagRequest body service.UpdateTagRequestSwagger true "更新标签结构体"
 // @Success 200 {object} model.TagSwagger "成功"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部服务错误"
 // @Router /api/v1/tags/{id} [put]
 func (t Tag) Update(c *gin.Context) {
-	param := service.UpdateTagRequest{
-		ID: convert.StrTo(c.Param("id")).MustUint32(),
-	}
+	param := service.UpdateTagRequest{}
 	response := app.NewResponse(c)
 
 	invalid, errs := app.BindAndValid(c, &param)
