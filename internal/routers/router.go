@@ -20,7 +20,7 @@ func NewRouter() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	apiv1 := r.Group("/api/v1")
-	tag := v1.NewTag()
+	tag := v1.NewTagAPI()
 	article := v1.NewArticle()
 
 	{

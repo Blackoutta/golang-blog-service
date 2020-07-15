@@ -11,16 +11,16 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type Tag struct {
-	Service service.TagService
+type TagAPI struct {
+	Service *service.TagService
 }
 
-func NewTag() Tag {
-	return Tag{}
+func NewTagAPI() TagAPI {
+	return TagAPI{}
 }
 
-func (t *Tag) BuildService(svc service.TagService) {
-	t.Service = svc
+func (t *TagAPI) AddService(svc service.TagService) {
+	t.Service = &svc
 }
 
 // @Summary 获取单个标签
@@ -30,7 +30,7 @@ func (t *Tag) BuildService(svc service.TagService) {
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部服务错误"
 // @Router /api/v1/tags/{id} [get]
-func (t Tag) Get(c *gin.Context) {
+func (t TagAPI) Get(c *gin.Context) {
 	param := service.GetTagRequest{
 		Id: convert.StrTo(c.Param("id")).MustUint32(),
 	}
@@ -43,7 +43,11 @@ func (t Tag) Get(c *gin.Context) {
 	}
 
 	if t.Service == nil {
-		t.BuildService(service.NewTagService(c, dao.NewTagDao(global.DBEngine)))
+		t.AddService(service.TagService{Ctx: c})
+	}
+
+	if t.Service.Dao == nil {
+		t.Service.AddDao(dao.NewTagDao(global.DBEngine))
 	}
 
 	tag, err := t.Service.GetTag(&param)
@@ -70,7 +74,7 @@ func (t Tag) Get(c *gin.Context) {
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部服务错误"
 // @Router /api/v1/tags [get]
-func (t Tag) List(c *gin.Context) {
+func (t TagAPI) List(c *gin.Context) {
 	// 初始化请求体和响应体
 	param := service.TagListRequest{}
 	response := app.NewResponse(c)
@@ -82,12 +86,18 @@ func (t Tag) List(c *gin.Context) {
 		return
 	}
 
-	svc := service.NewTagService(c)
+	if t.Service == nil {
+		t.AddService(service.TagService{Ctx: c})
+	}
+
+	if t.Service.Dao == nil {
+		t.Service.AddDao(dao.NewTagDao(global.DBEngine))
+	}
 	pager := app.Pager{
 		Page:     app.GetPage(c),
 		PageSize: app.GetPageSize(c),
 	}
-	totalRows, err := svc.CountTag(&service.CountTagRequest{
+	totalRows, err := t.Service.CountTag(&service.CountTagRequest{
 		Name:  param.Name,
 		State: param.State,
 	})
@@ -96,7 +106,7 @@ func (t Tag) List(c *gin.Context) {
 		response.ToErrorResponse(errcode.ErrorCountTagFail)
 		return
 	}
-	tags, err := svc.GetTagList(&param, &pager)
+	tags, err := t.Service.GetTagList(&param, &pager)
 	if err != nil {
 		global.Logger.Errorf("svc.GetTagList err: %v", err)
 		response.ToErrorResponse(errcode.ErrorGetTagListFail)
@@ -113,10 +123,9 @@ func (t Tag) List(c *gin.Context) {
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部服务错误"
 // @Router /api/v1/tags [post]
-func (t Tag) Create(c *gin.Context) {
+func (t TagAPI) Create(c *gin.Context) {
 	param := service.CreateTagRequest{}
 	response := app.NewResponse(c)
-
 	invalid, errs := app.BindAndValid(c, &param)
 	if invalid {
 		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
@@ -124,8 +133,15 @@ func (t Tag) Create(c *gin.Context) {
 		return
 	}
 
-	svc := service.NewTagService(c)
-	err := svc.CreateTag(&param)
+	if t.Service == nil {
+		t.AddService(service.TagService{Ctx: c})
+	}
+
+	if t.Service.Dao == nil {
+		t.Service.AddDao(dao.NewTagDao(global.DBEngine))
+	}
+	// svc := service.NewTagService(c)
+	err := t.Service.CreateTag(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.CreateTag err: %v", err)
 		response.ToErrorResponse(errcode.ErrorCreateTagFail)
@@ -144,7 +160,7 @@ func (t Tag) Create(c *gin.Context) {
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部服务错误"
 // @Router /api/v1/tags/state/{id} [patch]
-func (t Tag) ChangeState(c *gin.Context) {
+func (t TagAPI) ChangeState(c *gin.Context) {
 	id := convert.StrTo(c.Param("id")).MustUint32()
 	param := service.ChangeStateRequest{}
 	response := app.NewResponse(c)
@@ -157,8 +173,15 @@ func (t Tag) ChangeState(c *gin.Context) {
 	}
 
 	param.ID = id
-	svc := service.NewTagService(c)
-	err := svc.ChangeState(&param)
+	if t.Service == nil {
+		t.AddService(service.TagService{Ctx: c})
+	}
+
+	if t.Service.Dao == nil {
+		t.Service.AddDao(dao.NewTagDao(global.DBEngine))
+	}
+	// svc := service.NewTagService(c)
+	err := t.Service.ChangeState(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.ChangeState err:", err)
 		response.ToErrorResponse(errcode.ErrorUpdateTagFail)
@@ -177,7 +200,7 @@ func (t Tag) ChangeState(c *gin.Context) {
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部服务错误"
 // @Router /api/v1/tags/{id} [put]
-func (t Tag) Update(c *gin.Context) {
+func (t TagAPI) Update(c *gin.Context) {
 	param := service.UpdateTagRequest{}
 	response := app.NewResponse(c)
 
@@ -190,8 +213,15 @@ func (t Tag) Update(c *gin.Context) {
 
 	param.ID = convert.StrTo(c.Param("id")).MustUint32()
 
-	svc := service.NewTagService(c)
-	err := svc.UpdateTag(&param)
+	if t.Service == nil {
+		t.AddService(service.TagService{Ctx: c})
+	}
+
+	if t.Service.Dao == nil {
+		t.Service.AddDao(dao.NewTagDao(global.DBEngine))
+	}
+	// svc := service.NewTagService(c)
+	err := t.Service.UpdateTag(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.UpdateTag err:", err)
 		response.ToErrorResponse(errcode.ErrorUpdateTagFail)
@@ -209,7 +239,7 @@ func (t Tag) Update(c *gin.Context) {
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部服务错误"
 // @Router /api/v1/tags/{id} [delete]
-func (t Tag) Delete(c *gin.Context) {
+func (t TagAPI) Delete(c *gin.Context) {
 	param := service.DeleteTagRequest{
 		ID: convert.StrTo(c.Param("id")).MustUint32(),
 	}
@@ -224,8 +254,15 @@ func (t Tag) Delete(c *gin.Context) {
 
 	param.ID = convert.StrTo(c.Param("id")).MustUint32()
 
-	svc := service.NewTagService(c)
-	err := svc.DeleteTag(&param)
+	if t.Service == nil {
+		t.AddService(service.TagService{Ctx: c})
+	}
+
+	if t.Service.Dao == nil {
+		t.Service.AddDao(dao.NewTagDao(global.DBEngine))
+	}
+	// svc := service.NewTagService(c)
+	err := t.Service.DeleteTag(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.DeleteTag err:", err)
 		response.ToErrorResponse(errcode.ErrorDeleteTagFail)

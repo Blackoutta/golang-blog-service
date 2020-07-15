@@ -1,8 +1,10 @@
 package service
 
 import (
+	"github.com/Blackoutta/blog-service/internal/dao"
 	"github.com/Blackoutta/blog-service/internal/model"
 	"github.com/Blackoutta/blog-service/pkg/app"
+	"golang.org/x/net/context"
 )
 
 // requests
@@ -54,41 +56,40 @@ type DeleteTagRequest struct {
 	ID uint32 `form:"id" binding:"gt=0"`
 }
 
-type TagService interface {
-	CountTag(param *CountTagRequest) (int, error)
-	GetTag(param *GetTagRequest) (*model.Tag, error)
-	GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.Tag, error)
-	CreateTag(param *CreateTagRequest) error
-	UpdateTag(param *UpdateTagRequest) error
-	ChangeState(param *ChangeStateRequest) error
-	DeleteTag(param *DeleteTagRequest) error
+type TagService struct {
+	Ctx context.Context
+	Dao dao.TagDao
+}
+
+func (svc *TagService) AddDao(dao dao.TagDao) {
+	svc.Dao = dao
 }
 
 // service
-func (svc *tagService) CountTag(param *CountTagRequest) (int, error) {
-	return svc.dao.CountTag(param.Name, param.State)
+func (svc *TagService) CountTag(param *CountTagRequest) (int, error) {
+	return svc.Dao.CountTag(param.Name, param.State)
 }
 
-func (svc *tagService) GetTag(param *GetTagRequest) (*model.Tag, error) {
-	return svc.dao.GetTag(param.Id)
+func (svc *TagService) GetTag(param *GetTagRequest) (*model.Tag, error) {
+	return svc.Dao.GetTag(param.Id)
 }
 
-func (svc *tagService) GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.Tag, error) {
-	return svc.dao.GetTagList(param.Name, param.State, pager.Page, pager.PageSize)
+func (svc *TagService) GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.Tag, error) {
+	return svc.Dao.GetTagList(param.Name, param.State, pager.Page, pager.PageSize)
 }
 
-func (svc *tagService) CreateTag(param *CreateTagRequest) error {
-	return svc.dao.CreateTag(param.Name, param.State, param.CreatedBy)
+func (svc *TagService) CreateTag(param *CreateTagRequest) error {
+	return svc.Dao.CreateTag(param.Name, param.State, param.CreatedBy)
 }
 
-func (svc *tagService) UpdateTag(param *UpdateTagRequest) error {
-	return svc.dao.UpdateTag(param.ID, param.Name, *param.State, param.ModifiedBy)
+func (svc *TagService) UpdateTag(param *UpdateTagRequest) error {
+	return svc.Dao.UpdateTag(param.ID, param.Name, *param.State, param.ModifiedBy)
 }
 
-func (svc *tagService) ChangeState(param *ChangeStateRequest) error {
-	return svc.dao.ChangeState(param.ID, *param.State, param.ModifiedBy)
+func (svc *TagService) ChangeState(param *ChangeStateRequest) error {
+	return svc.Dao.ChangeState(param.ID, *param.State, param.ModifiedBy)
 }
 
-func (svc *tagService) DeleteTag(param *DeleteTagRequest) error {
-	return svc.dao.DeleteTag(param.ID)
+func (svc *TagService) DeleteTag(param *DeleteTagRequest) error {
+	return svc.Dao.DeleteTag(param.ID)
 }
